@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Kukreja | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #101010;
+            --text: #EAEAEA;
+            --text-secondary: #A3A3A3;
+            --accent: #34D399; /* Emerald 400 */
+            --accent-hover: #10B981; /* Emerald 500 */
+            --card-bg: #1C1C1C;
+            --border-color: #2D2D2D;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        a, button, .interactive-element, .project-card {
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 16px;
+            height: 16px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, transform 0.2s ease-out;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-grow {
+            width: 48px;
+            height: 48px;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Marquee */
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+            padding: 1rem 0;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-50%); }
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 4px;
+            background-color: var(--accent);
+            margin-left: 8px;
+            animation: blink 0.8s infinite;
+            height: 0.9em; 
+            vertical-align: -0.05em;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .typing-cursor.fade-out {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Project Horizontal Scroll */
+        .horizontal-scroll-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .horizontal-scroll {
+            display: flex;
+            width: max-content;
+            gap: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Custom Scrollbar for horizontal scroll*/
+        .projects-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .projects-container::-webkit-scrollbar-track {
+            background: var(--card-bg);
+            border-radius: 10px;
+        }
+        .projects-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        .projects-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-white">
+    <div class="cursor-dot"></div>
+
+    <!-- Header -->
+    <header class="w-full absolute top-0 z-50">
+        <div class="container mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-tight text-white interactive-element">GK.</a>
+            <div class="flex items-center space-x-6">
+                <a href="https://www.linkedin.com/in/gauravvkukreja/" target="_blank" class="text-xl text-gray-400 hover:text-white transition-colors interactive-element"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/gauravkukreja23" target="_blank" class="text-xl text-gray-400 hover:text-white transition-colors interactive-element"><i class="fab fa-github"></i></a>
+                <a href="#contact" class="bg-white text-black font-semibold py-2 px-5 rounded-full text-sm hover:bg-gray-200 transition-colors interactive-element">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center items-center text-center">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-emerald-500 rounded-full blur-3xl opacity-10 pointer-events-none"></div>
+            <div class="bg-emerald-500 text-black text-xs font-bold px-4 py-1.5 rounded-full mb-4 reveal flex items-center">
+                <i class="fas fa-trophy mr-2"></i>
+                <span>Distinguished Winner, Apple Swift Student Challenge 2025</span>
+            </div>
+            <h1 id="typing-heading" class="text-5xl md:text-8xl font-black leading-tight tracking-tighter reveal" style="transition-delay: 0.1s; min-height: 250px;">
+                <!-- This will be populated by the typing animation -->
+            </h1>
+            <p id="day-greeting" class="text-xl text-secondary mt-6 reveal" style="transition-delay: 0.2s;"></p>
+            <div class="flex flex-col items-center gap-4 mt-8 reveal" style="transition-delay: 0.3s;">
+                <div>
+                    <span class="border border-gray-700 text-gray-300 text-sm font-medium px-4 py-1.5 rounded-full">Major in Biological Sciences & Bioengineering</span>
+                </div>
+                <div class="flex items-center gap-4 flex-wrap justify-center">
+                    <span class="border border-gray-700 text-gray-300 text-sm font-medium px-4 py-1.5 rounded-full">Minor in Management</span>
+                    <span class="border border-gray-700 text-gray-300 text-sm font-medium px-4 py-1.5 rounded-full">Minor in Cognitive Science</span>
+                </div>
+            </div>
+            <p class="text-lg md:text-xl text-secondary mt-6 max-w-2xl mx-auto reveal" style="transition-delay: 0.4s;">
+                I am passionate about technology and innovation, and bringing a change in the world.
+            </p>
+        </section>
+
+        <!-- Marquee Skills -->
+        <section class="py-12 reveal">
+            <div class="marquee">
+                <div class="marquee-content text-4xl font-bold text-gray-700">
+                    <span class="text-white mx-8">Python</span>&bull;
+                    <span class="mx-8">Product Strategy</span>&bull;
+                    <span class="text-white mx-8">Swift</span>&bull;
+                    <span class="mx-8">Figma</span>&bull;
+                    <span class="text-white mx-8">R</span>&bull;
+                    <span class="mx-8">UI/UX Design</span>&bull;
+                    <span class="text-white mx-8">Data Analysis</span>&bull;
+                    <span class="mx-8">React</span>&bull;
+                    <span class="text-white mx-8">Tableau</span>&bull;
+                    <span class="mx-8">SQL</span>&bull;
+                    <!-- Duplicate for seamless loop -->
+                    <span class="text-white mx-8">Python</span>&bull;
+                    <span class="mx-8">Product Strategy</span>&bull;
+                    <span class="text-white mx-8">Swift</span>&bull;
+                    <span class="mx-8">Figma</span>&bull;
+                    <span class="text-white mx-8">R</span>&bull;
+                    <span class="mx-8">UI/UX Design</span>&bull;
+                    <span class="text-white mx-8">Data Analysis</span>&bull;
+                    <span class="mx-8">React</span>&bull;
+                    <span class="text-white mx-8">Tableau</span>&bull;
+                    <span class="mx-8">SQL</span>&bull;
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-32">
+            <div class="max-w-4xl mx-auto">
+                <p class="text-2xl md:text-4xl font-medium leading-relaxed text-gray-300 reveal">
+                    I'm a motivated student at <span class="text-white">IIT Kanpur</span>, passionate about the intersection of technology, design, and business. A highlight of my journey is being a <span class="text-white">Distinguished Winner of Apple's Swift Student Challenge</span> and presenting my app to Tim Cook. That moment crystallized my drive to bridge the gap between powerful technology and human-centered design, creating products that are both innovative and impactful.
+                </p>
+            </div>
+        </section>
+
+        <!-- In The News Section -->
+        <section id="news" class="pb-32">
+            <div class="max-w-4xl mx-auto text-center mb-16">
+                <h2 class="text-4xl font-bold reveal">In The News</h2>
+                <p class="text-lg text-secondary mt-4 reveal">Media features on my Apple Swift Student Challenge achievement.</p>
+            </div>
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- News Card 1 -->
+                <a href="https://www.indulgexpress.com/tech/2025/Jun/19/20-year-old-iit-ian-makes-it-to-the-finals-of-the-wwdc-2025-swift-student-challenge" target="_blank" rel="noopener noreferrer" class="block border border-gray-800 rounded-2xl bg-gray-900/20 overflow-hidden reveal group relative interactive-element aspect-[4/3]">
+                    <img src="https://media.indulgexpress.com/indulgexpress%2F2025-06-19%2Fp77sc05w%2FGaurav-Tim.JPG?rect=0%2C522%2C5000%2C2813&w=1200&auto=format%2Ccompress&fit=max" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Tech article concept" onerror="this.onerror=null;this.src='https://placehold.co/800x600/101010/EAEAEA?text=The+New+Indian+Express';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6">
+                        <h3 class="text-xl font-bold text-white">20-year-old IIT-ian earns global recognition at the WWDC 2025 Swift Student Challenge</h3>
+                        <p class="text-sm text-emerald-400 mt-2 font-semibold">The New Indian Express</p>
+                    </div>
+                </a>
+                <!-- News Card 2 -->
+                <a href="https://www.telegraphindia.com/t2/heres-how-swift-student-challenge-changed-the-life-of-20-year-old-gaurav-kukreja-prnt/cid/2098489" target="_blank" rel="noopener noreferrer" class="block border border-gray-800 rounded-2xl bg-gray-900/20 overflow-hidden reveal group relative interactive-element aspect-[4/3]" style="transition-delay: 0.1s;">
+                    <img src="https://assets.telegraphindia.com/telegraph/2025/May/1746842640_new-project-24.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Gaurav Kukreja with Tim Cook" onerror="this.onerror=null;this.src='https://placehold.co/800x600/101010/EAEAEA?text=The+Telegraph';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6">
+                        <h3 class="text-xl font-bold text-white">Here’s how Swift Student Challenge changed the life of 20-year-old Gaurav Kukreja</h3>
+                        <p class="text-sm text-emerald-400 mt-2 font-semibold">The Telegraph</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20">
+            <div class="max-w-4xl mx-auto text-center mb-20">
+                <h2 class="text-5xl font-bold reveal">Selected Projects</h2>
+                <p class="text-lg text-secondary mt-4 reveal">A glimpse into my passion for creation and problem-solving.</p>
+            </div>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card border border-gray-800 rounded-2xl bg-gray-900/20 overflow-hidden reveal group" data-project="fast-aid">
+                    <div class="overflow-hidden aspect-video">
+                        <img src="https://res.cloudinary.com/dr3tv1frj/image/upload/v1757423087/Untitled_design_voo4lu.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Fast Aid App" onerror="this.onerror=null;this.src='https://placehold.co/1280x720/101010/EAEAEA?text=Fast+Aid+App';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold">Fast Aid App</h3>
+                        <p class="text-secondary mt-2 mb-4">An award-winning iOS app for emergency first aid, recognized by Apple for its clean design and societal impact.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">Swift</span>
+                            <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">iOS</span>
+                            <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="project-card border border-gray-800 rounded-2xl bg-gray-900/20 overflow-hidden reveal group" data-project="health-analytics">
+                    <div class="overflow-hidden aspect-video">
+                        <img src="https://res.cloudinary.com/dr3tv1frj/image/upload/v1757423382/Screenshot_2025-09-09_at_18.39.18_sbniwx.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Health Analytics App" onerror="this.onerror=null;this.src='https://placehold.co/1280x720/101010/EAEAEA?text=Health+Analytics';">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold">Health Analytics Web App</h3>
+                        <p class="text-secondary mt-2 mb-4">A hackathon project featuring a client-only web app for health data analytics with superior data clarity.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">React</span>
+                            <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Data Viz</span>
+                            <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 3 Wrapper -->
+                <div class="md:col-span-2 flex justify-center">
+                    <div class="project-card border border-gray-800 rounded-2xl bg-gray-900/20 overflow-hidden reveal group w-full md:w-[calc(50%-1rem)]" data-project="geriatric-health">
+                        <div class="overflow-hidden aspect-video">
+                            <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Geriatric Health Research" onerror="this.onerror=null;this.src='https://placehold.co/1280x720/101010/EAEAEA?text=Geriatric+Health';">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold">Geriatric Health Research</h3>
+                            <p class="text-secondary mt-2 mb-4">Analyzing health datasets from 25 countries to model factors affecting geriatric health for public policy insights.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">R</span>
+                                <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Statistics</span>
+                                <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Data Analysis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-32">
+            <div class="max-w-4xl mx-auto text-center mb-20">
+                <h2 class="text-5xl font-bold reveal">Career Journey</h2>
+                <p class="text-lg text-secondary mt-4 reveal">A timeline of my professional growth and learning experiences.</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Experience Item 1 -->
+                <div class="experience-item reveal grid md:grid-cols-[auto,1fr] gap-x-8">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border-2 border-emerald-400/50 bg-emerald-900/50 flex items-center justify-center">
+                            <i class="fas fa-briefcase text-emerald-400"></i>
+                        </div>
+                        <div class="w-px flex-grow bg-gray-700 mt-4"></div>
+                    </div>
+                    <div>
+                        <p class="text-secondary mb-1">May '25 - Jul '25</p>
+                        <h3 class="text-xl font-bold text-white">Product and Growth Intern</h3>
+                        <p class="font-medium text-gray-400">Hammer Electronics Pvt Ltd</p>
+                        <p class="text-secondary mt-3 mb-4">Collaborated with tech experts to optimize speaker models, integrating key customer insights into user-centric product designs for top-selling products.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Product Design</span>
+                            <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Customer Research</span>
+                            <span class="bg-orange-900/50 text-orange-300 text-sm font-semibold px-3 py-1 rounded-full">Hardware</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Experience Item 2 -->
+                <div class="experience-item reveal grid md:grid-cols-[auto,1fr] gap-x-8">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border-2 border-emerald-400/50 bg-emerald-900/50 flex items-center justify-center">
+                            <i class="fas fa-building text-emerald-400"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-secondary mb-1">Nov '24 - Dec '24</p>
+                        <h3 class="text-xl font-bold text-white">Founder's Office Intern</h3>
+                        <p class="font-medium text-gray-400">Bamboo Path Academy, Singapore</p>
+                        <p class="text-secondary mt-3 mb-4">Drove market entry strategy by conducting competitor and ROI analysis for site selection, and built the company's foundational web presence.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Market Research</span>
+                            <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">ROI Analysis</span>
+                            <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">SEO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leadership Section -->
+        <section id="leadership" class="py-32">
+            <div class="max-w-4xl mx-auto text-center mb-20">
+                <h2 class="text-5xl font-bold reveal">Leadership & Initiatives</h2>
+                <p class="text-lg text-secondary mt-4 reveal">Leading teams and driving engagement in various campus roles.</p>
+            </div>
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                <!-- Leadership Item 1 -->
+                <div class="reveal bg-gray-900/20 border border-gray-800 rounded-2xl p-8 flex flex-col h-full">
+                    <div class="text-emerald-400 text-5xl mb-4"><i class="fas fa-paint-brush"></i></div>
+                    <div class="flex-grow">
+                        <p class="text-sm text-secondary mb-1">Mar '25 - Present</p>
+                        <h3 class="font-bold text-white text-xl">Coordinator, Social & Design</h3>
+                        <p class="text-secondary">BioSoc, IIT Kanpur</p>
+                        <p class="text-gray-400 mt-3">Directed all design, publicity, and social media, leading a team to execute all society events.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Leadership</span>
+                        <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Event Management</span>
+                        <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">Digital Marketing</span>
+                    </div>
+                </div>
+                <!-- Leadership Item 2 -->
+                <div class="reveal bg-gray-900/20 border border-gray-800 rounded-2xl p-8 flex flex-col h-full" style="transition-delay: 0.1s;">
+                    <div class="text-emerald-400 text-5xl mb-4"><i class="fas fa-trophy"></i></div>
+                    <div class="flex-grow">
+                        <p class="text-sm text-secondary mb-1">Sep '24 - Dec '24</p>
+                        <h3 class="font-bold text-white text-xl">Manager, Events</h3>
+                        <p class="text-secondary">Inter IIT Sports Meet</p>
+                        <p class="text-gray-400 mt-3">Executed a national tournament for 4,000+ participants and secured key brand partnerships.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="bg-orange-900/50 text-orange-300 text-sm font-semibold px-3 py-1 rounded-full">Operations</span>
+                        <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Sponsorship</span>
+                        <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">Marketing</span>
+                    </div>
+                </div>
+                <!-- Leadership Item 3 -->
+                <div class="reveal bg-gray-900/20 border border-gray-800 rounded-2xl p-8 flex flex-col h-full" style="transition-delay: 0.2s;">
+                    <div class="text-emerald-400 text-5xl mb-4"><i class="fas fa-bullhorn"></i></div>
+                    <div class="flex-grow">
+                        <p class="text-sm text-secondary mb-1">May '24 - May '25</p>
+                        <h3 class="font-bold text-white text-xl">Manager, Outreach Cell</h3>
+                        <p class="text-secondary">IIT Kanpur</p>
+                        <p class="text-gray-400 mt-3">Led a 45-member team to strengthen student-alumni relations and drove 75%+ social media growth.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Team Management</span>
+                        <span class="bg-purple-900/50 text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Public Relations</span>
+                        <span class="bg-emerald-900/50 text-emerald-300 text-sm font-semibold px-3 py-1 rounded-full">Social Media Growth</span>
+                    </div>
+                </div>
+                <!-- Leadership Item 4 -->
+                <div class="reveal bg-gray-900/20 border border-gray-800 rounded-2xl p-8 flex flex-col h-full" style="transition-delay: 0.3s;">
+                    <div class="text-emerald-400 text-5xl mb-4"><i class="fas fa-users"></i></div>
+                    <div class="flex-grow">
+                        <p class="text-sm text-secondary mb-1">May '23 - May '24</p>
+                        <h3 class="font-bold text-white text-xl">Organiser, Udghosh</h3>
+                        <p class="text-secondary">IIT Kanpur's Sports Festival</p>
+                        <p class="text-gray-400 mt-3">Coordinated design tasks and created user-friendly festival websites using Figma and Blender.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="bg-red-900/50 text-red-300 text-sm font-semibold px-3 py-1 rounded-full">Figma</span>
+                        <span class="bg-orange-900/50 text-orange-300 text-sm font-semibold px-3 py-1 rounded-full">Blender</span>
+                        <span class="bg-blue-900/50 text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Web Design</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-32">
+            <div class="max-w-4xl mx-auto text-center mb-20">
+                <h2 class="text-5xl font-bold reveal">Education & Scores</h2>
+                <p class="text-lg text-secondary mt-4 reveal">My academic background and achievements.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Education Card 1 -->
+                <div class="bg-gray-900/20 border border-gray-800 rounded-2xl p-8 text-center reveal">
+                    <h3 class="text-5xl font-bold text-emerald-400 mb-2">8.4/10</h3>
+                    <p class="text-lg font-semibold text-white">B.Tech, BSBE</p>
+                    <p class="text-secondary">Indian Institute of Technology Kanpur</p>
+                </div>
+                <!-- Education Card 2 -->
+                <div class="bg-gray-900/20 border border-gray-800 rounded-2xl p-8 text-center reveal" style="transition-delay: 0.1s;">
+                    <h3 class="text-5xl font-bold text-emerald-400 mb-2">A+</h3>
+                    <p class="text-lg font-semibold text-white">Data Science & AI Summer School</p>
+                    <p class="text-secondary">Nanyang Technological University, Singapore</p>
+                </div>
+                <!-- Education Card 3 -->
+                <div class="bg-gray-900/20 border border-gray-800 rounded-2xl p-8 text-center reveal" style="transition-delay: 0.2s;">
+                    <h3 class="text-5xl font-bold text-emerald-400 mb-2">97%</h3>
+                    <p class="text-lg font-semibold text-white">Class XII (CBSE)</p>
+                    <p class="text-secondary">Modern Delhi Public School, Faridabad</p>
+                </div>
+                <!-- Education Card 4 -->
+                <div class="bg-gray-900/20 border border-gray-800 rounded-2xl p-8 text-center reveal" style="transition-delay: 0.3s;">
+                    <h3 class="text-5xl font-bold text-emerald-400 mb-2">96.3%</h3>
+                    <p class="text-lg font-semibold text-white">Class X (CBSE)</p>
+                    <p class="text-secondary">Apeejay School, Faridabad</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer / Contact -->
+    <footer id="contact" class="py-32 text-center">
+        <div class="container mx-auto px-6 reveal">
+            <h2 class="text-5xl md:text-7xl font-bold">Let's talk</h2>
+            <a href="mailto:gkukreja22@iitk.ac.in" class="text-3xl md:text-5xl font-medium text-gray-400 hover:text-white transition-all duration-300 inline-block my-8 interactive-element group">
+                gkukreja22@iitk.ac.in
+                <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-emerald-400 mx-auto"></span>
+            </a>
+            <div class="mt-8 flex justify-center space-x-8">
+                <a href="https://www.linkedin.com/in/gauravvkukreja/" target="_blank" class="text-2xl text-gray-400 hover:text-white transition-colors interactive-element"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/gauravkukreja23" target="_blank" class="text-2xl text-gray-400 hover:text-white transition-colors interactive-element"><i class="fab fa-github"></i></a>
+                <a href="https://gauravkukreja.me" target="_blank" class="text-2xl text-gray-400 hover:text-white transition-colors interactive-element"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="text-center py-6 border-t border-gray-900">
+        <p class="text-sm text-gray-500">&copy; Gaurav Kukreja 2025. Crafted with love ❤️</p>
+    </div>
+
+
+    <!-- Case Study Page Section -->
+    <div id="case-study-page" class="hidden fixed inset-0 bg-[#1C1C1C] z-[100] overflow-y-auto">
+        <div class="container mx-auto px-6 py-24 min-h-screen">
+            <button id="back-to-main" class="text-emerald-400 hover:text-emerald-300 mb-8 interactive-element font-semibold">
+                &larr; Back to all projects
+            </button>
+            <div id="case-study-content">
+                <!-- Dynamic content will be injected here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Store references to main sections
+        const mainContent = document.querySelector('main');
+        const header = document.querySelector('header');
+        const footerContent = document.querySelector('footer');
+        const footerCredit = document.querySelector('footer + div');
+        const caseStudyPage = document.getElementById('case-study-page');
+        const caseStudyContent = document.getElementById('case-study-content');
+        const backToMainBtn = document.getElementById('back-to-main');
+        const projectCards = document.querySelectorAll('.project-card');
+        const body = document.body;
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+        });
+
+        function updateInteractiveElements() {
+            document.querySelectorAll('.project-card, .interactive-element, a, button').forEach(el => {
+                el.removeEventListener('mouseenter', growCursor);
+                el.removeEventListener('mouseleave', shrinkCursor);
+                el.addEventListener('mouseenter', growCursor);
+                el.addEventListener('mouseleave', shrinkCursor);
+            });
+        }
+
+        const growCursor = () => cursorDot.classList.add('cursor-grow');
+        const shrinkCursor = () => cursorDot.classList.remove('cursor-grow');
+
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Case Study Logic ---
+        const projectData = {
+            'fast-aid': {
+                title: 'Fast Aid - Emergency First Aid App',
+                subtitle: 'Winning app of the Apple Swift Student Challenge 2025',
+                tags: ['Swift', 'SwiftUI', 'iOS Development', 'UI/UX Design'],
+                image: 'https://res.cloudinary.com/dr3tv1frj/image/upload/v1757423087/Untitled_design_voo4lu.png',
+                appStoreUrl: 'https://apps.apple.com/us/app/fast-aid/id6746406857', // Placeholder URL
+                content: `
+                    <p class="text-secondary leading-relaxed mb-6 text-lg">Fast Aid is an iOS application I independently designed and developed from scratch to provide immediate, easy-to-understand first aid instructions during emergencies. It was recognized as a Distinguished Winner in the Apple Swift Student Challenge 2025.</p>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">Key Features:</h4>
+                    <ul class="list-disc list-inside text-secondary space-y-2 mb-6 text-lg">
+                        <li>Step-by-step guidance for 19+ common medical emergencies.</li>
+                        <li>Interactive CPR animations and clear voice instructions to guide users.</li>
+                        <li>An integrated emergency call function to quickly contact local services.</li>
+                        <li>Clean, intuitive, and accessible user interface designed for high-stress situations.</li>
+                    </ul>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">Development & Impact:</h4>
+                    <p class="text-secondary leading-relaxed text-lg">I handled the entire lifecycle of the app, from conceptualization and design in Figma to development in Swift and SwiftUI, and finally, publishing on the App Store. The app reached users in over 8 countries within its first week. This project was a phenomenal learning experience in product management, app development, and user-centric design. The honor of presenting it to Tim Cook was a true career highlight.</p>
+                `
+            },
+            'health-analytics': {
+                title: 'Health Analytics Web App',
+                subtitle: 'Developed for a Hackathon with Elyx, Singapore',
+                tags: ['React', 'JavaScript', 'Data Visualization', 'Chart.js'],
+                image: 'https://res.cloudinary.com/dr3tv1frj/image/upload/v1757423571/Screenshot_2025-09-09_at_18.36.47_zje9dr.png',
+                liveUrl: 'https://elyx-member-journey-app-zeta.vercel.app', // Placeholder URL
+                content: `
+                    <p class="text-secondary leading-relaxed mb-6 text-lg">This project was a client-only web application built to analyze and visualize an 8-month health dataset. The primary goal was to ensure superior data clarity and rapid auditability for health coaches and members.</p>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">Core Functionality:</h4>
+                    <ul class="list-disc list-inside text-secondary space-y-2 mb-6 text-lg">
+                        <li>Engineered an intuitive UI with interactive charts and graphs to visualize health trends.</li>
+                        <li>Implemented a unique flow to instantly trace data points (interventions) back to their highlighted evidence in chat logs.</li>
+                        <li>Modeled a realistic end-to-end member journey with over 5 distinct data streams.</li>
+                        <li>Built with React to create a fast, responsive, and component-based architecture.</li>
+                    </ul>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">Outcome:</h4>
+                    <p class="text-secondary leading-relaxed text-lg">The app successfully served as a powerful tool for creating credible product demos and validating core UX flows. It demonstrated a clear, data-driven approach to health monitoring and intervention, showcasing my ability to translate complex data into actionable insights through effective UI/UX design.</p>
+                `
+            },
+            'geriatric-health': {
+                title: 'Quantitative Analysis of Geriatric Health Factors',
+                subtitle: 'Ongoing Research under Prof. Robert Sonowal, BSBE, IIT Kanpur',
+                tags: ['R', 'Data Analysis', 'Statistical Modeling', 'Public Health'],
+                image: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                content: `
+                    <p class="text-secondary leading-relaxed mb-6 text-lg">This research project involves a comprehensive analysis of extensive health datasets from 25 countries to understand the complex interplay between frailty, depression, and cognitive impairment among the elderly population.</p>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">My Role & Responsibilities:</h4>
+                    <ul class="list-disc list-inside text-secondary space-y-2 mb-6 text-lg">
+                        <li>Managing the complete data pipeline, which includes data cleaning, preprocessing, and structuring large-scale datasets on population aging using R and RStudio.</li>
+                        <li>Applying advanced statistical techniques and data modeling to test core hypotheses across two distinct age cohorts (60-79 and 80+).</li>
+                        <li>Visualizing data and results using ggplot2 to uncover patterns and relationships.</li>
+                    </ul>
+                    <h4 class="font-bold text-xl mb-3 text-emerald-400">Objectives & Expected Impact:</h4>
+                    <p class="text-secondary leading-relaxed text-lg">The primary objective is to generate findings that can be prepared for publication. This research has direct implications for shaping future public health policy and developing more effective geriatric care interventions, contributing valuable insights to the field of aging and health.</p>
+                `
+            }
+        };
+        
+        function showCaseStudy(projectKey) {
+            const data = projectData[projectKey];
+            if (!data) return;
+
+            caseStudyContent.innerHTML = `
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-6xl font-bold mb-2 text-white">${data.title}</h2>
+                    <p class="font-semibold text-secondary text-lg mb-6">${data.subtitle}</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${data.tags.map(tag => `<span class="bg-gray-800 text-gray-300 text-sm font-semibold px-3 py-1 rounded-full">${tag}</span>`).join('')}
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 items-center my-8">
+                        ${data.appStoreUrl ? `
+                            <a href="${data.appStoreUrl}" target="_blank" rel="noopener noreferrer" class="interactive-element transition-transform hover:scale-105">
+                                <svg id="livetype" xmlns="http://www.w3.org/2000/svg" width="119.66407" height="40" viewBox="0 0 119.66407 40">
+  <title>Download_on_the_App_Store_Badge_US-UK_RGB_blk_4SVG_092917</title>
+  <g>
+    <g>
+      <g>
+        <path d="M110.13477,0H9.53468c-.3667,0-.729,0-1.09473.002-.30615.002-.60986.00781-.91895.0127A13.21476,13.21476,0,0,0,5.5171.19141a6.66509,6.66509,0,0,0-1.90088.627A6.43779,6.43779,0,0,0,1.99757,1.99707,6.25844,6.25844,0,0,0,.81935,3.61816a6.60119,6.60119,0,0,0-.625,1.90332,12.993,12.993,0,0,0-.1792,2.002C.00587,7.83008.00489,8.1377,0,8.44434V31.5586c.00489.3105.00587.6113.01515.9219a12.99232,12.99232,0,0,0,.1792,2.0019,6.58756,6.58756,0,0,0,.625,1.9043A6.20778,6.20778,0,0,0,1.99757,38.001a6.27445,6.27445,0,0,0,1.61865,1.1787,6.70082,6.70082,0,0,0,1.90088.6308,13.45514,13.45514,0,0,0,2.0039.1768c.30909.0068.6128.0107.91895.0107C8.80567,40,9.168,40,9.53468,40H110.13477c.3594,0,.7246,0,1.084-.002.3047,0,.6172-.0039.9219-.0107a13.279,13.279,0,0,0,2-.1768,6.80432,6.80432,0,0,0,1.9082-.6308,6.27742,6.27742,0,0,0,1.6172-1.1787,6.39482,6.39482,0,0,0,1.1816-1.6143,6.60413,6.60413,0,0,0,.6191-1.9043,13.50643,13.50643,0,0,0,.1856-2.0019c.0039-.3106.0039-.6114.0039-.9219.0078-.3633.0078-.7246.0078-1.0938V9.53613c0-.36621,0-.72949-.0078-1.09179,0-.30664,0-.61426-.0039-.9209a13.5071,13.5071,0,0,0-.1856-2.002,6.6177,6.6177,0,0,0-.6191-1.90332,6.46619,6.46619,0,0,0-2.7988-2.7998,6.76754,6.76754,0,0,0-1.9082-.627,13.04394,13.04394,0,0,0-2-.17676c-.3047-.00488-.6172-.01074-.9219-.01269-.3594-.002-.7246-.002-1.084-.002Z" style="fill: #a6a6a6"/>
+        <path d="M8.44483,39.125c-.30468,0-.602-.0039-.90429-.0107a12.68714,12.68714,0,0,1-1.86914-.1631,5.88381,5.88381,0,0,1-1.65674-.5479,5.40573,5.40573,0,0,1-1.397-1.0166,5.32082,5.32082,0,0,1-1.02051-1.3965,5.72186,5.72186,0,0,1-.543-1.6572,12.41351,12.41351,0,0,1-.1665-1.875c-.00634-.2109-.01464-.9131-.01464-.9131V8.44434S.88185,7.75293.8877,7.5498a12.37039,12.37039,0,0,1,.16553-1.87207,5.7555,5.7555,0,0,1,.54346-1.6621A5.37349,5.37349,0,0,1,2.61183,2.61768,5.56543,5.56543,0,0,1,4.01417,1.59521a5.82309,5.82309,0,0,1,1.65332-.54394A12.58589,12.58589,0,0,1,7.543.88721L8.44532.875H111.21387l.9131.0127a12.38493,12.38493,0,0,1,1.8584.16259,5.93833,5.93833,0,0,1,1.6709.54785,5.59374,5.59374,0,0,1,2.415,2.41993,5.76267,5.76267,0,0,1,.5352,1.64892,12.995,12.995,0,0,1,.1738,1.88721c.0029.2832.0029.5874.0029.89014.0079.375.0079.73193.0079,1.09179V30.4648c0,.3633,0,.7178-.0079,1.0752,0,.3252,0,.6231-.0039.9297a12.73126,12.73126,0,0,1-.1709,1.8535,5.739,5.739,0,0,1-.54,1.67,5.48029,5.48029,0,0,1-1.0156,1.3857,5.4129,5.4129,0,0,1-1.3994,1.0225,5.86168,5.86168,0,0,1-1.668.5498,12.54218,12.54218,0,0,1-1.8692.1631c-.2929.0068-.5996.0107-.8974.0107l-1.084.002Z"/>
+      </g>
+      <g id="_Group_" data-name="&lt;Group&gt;">
+        <g id="_Group_2" data-name="&lt;Group&gt;">
+          <g id="_Group_3" data-name="&lt;Group&gt;">
+            <path id="_Path_" data-name="&lt;Path&gt;" d="M24.76888,20.30068a4.94881,4.94881,0,0,1,2.35656-4.15206,5.06566,5.06566,0,0,0-3.99116-2.15768c-1.67924-.17626-3.30719,1.00483-4.1629,1.00483-.87227,0-2.18977-.98733-3.6085-.95814a5.31529,5.31529,0,0,0-4.47292,2.72787c-1.934,3.34842-.49141,8.26947,1.3612,10.97608.9269,1.32535,2.01018,2.8058,3.42763,2.7533,1.38706-.05753,1.9051-.88448,3.5794-.88448,1.65876,0,2.14479.88448,3.591.8511,1.48838-.02416,2.42613-1.33124,3.32051-2.66914a10.962,10.962,0,0,0,1.51842-3.09251A4.78205,4.78205,0,0,1,24.76888,20.30068Z" style="fill: #fff"/>
+            <path id="_Path_2" data-name="&lt;Path&gt;" d="M22.03725,12.21089a4.87248,4.87248,0,0,0,1.11452-3.49062,4.95746,4.95746,0,0,0-3.20758,1.65961,4.63634,4.63634,0,0,0-1.14371,3.36139A4.09905,4.09905,0,0,0,22.03725,12.21089Z" style="fill: #fff"/>
+          </g>
+        </g>
+        <g>
+          <path d="M42.30227,27.13965h-4.7334l-1.13672,3.35645H34.42727l4.4834-12.418h2.083l4.4834,12.418H43.438ZM38.0591,25.59082h3.752l-1.84961-5.44727h-.05176Z" style="fill: #fff"/>
+          <path d="M55.15969,25.96973c0,2.81348-1.50586,4.62109-3.77832,4.62109a3.0693,3.0693,0,0,1-2.84863-1.584h-.043v4.48438h-1.8584V21.44238H48.4302v1.50586h.03418a3.21162,3.21162,0,0,1,2.88281-1.60059C53.645,21.34766,55.15969,23.16406,55.15969,25.96973Zm-1.91016,0c0-1.833-.94727-3.03809-2.39258-3.03809-1.41992,0-2.375,1.23047-2.375,3.03809,0,1.82422.95508,3.0459,2.375,3.0459C52.30227,29.01563,53.24953,27.81934,53.24953,25.96973Z" style="fill: #fff"/>
+          <path d="M65.12453,25.96973c0,2.81348-1.50586,4.62109-3.77832,4.62109a3.0693,3.0693,0,0,1-2.84863-1.584h-.043v4.48438h-1.8584V21.44238H58.395v1.50586h.03418A3.21162,3.21162,0,0,1,61.312,21.34766C63.60988,21.34766,65.12453,23.16406,65.12453,25.96973Zm-1.91016,0c0-1.833-.94727-3.03809-2.39258-3.03809-1.41992,0-2.375,1.23047-2.375,3.03809,0,1.82422.95508,3.0459,2.375,3.0459C62.26711,29.01563,63.21438,27.81934,63.21438,25.96973Z" style="fill: #fff"/>
+          <path d="M71.71047,27.03613c.1377,1.23145,1.334,2.04,2.96875,2.04,1.56641,0,2.69336-.80859,2.69336-1.91895,0-.96387-.67969-1.541-2.28906-1.93652l-1.60937-.3877c-2.28027-.55078-3.33887-1.61719-3.33887-3.34766,0-2.14258,1.86719-3.61426,4.51855-3.61426,2.624,0,4.42285,1.47168,4.4834,3.61426h-1.876c-.1123-1.23926-1.13672-1.9873-2.63379-1.9873s-2.52148.75684-2.52148,1.8584c0,.87793.6543,1.39453,2.25488,1.79l1.36816.33594c2.54785.60254,3.60645,1.626,3.60645,3.44238,0,2.32324-1.85059,3.77832-4.79395,3.77832-2.75391,0-4.61328-1.4209-4.7334-3.667Z" style="fill: #fff"/>
+          <path d="M83.34621,19.2998v2.14258h1.72168v1.47168H83.34621v4.99121c0,.77539.34473,1.13672,1.10156,1.13672a5.80752,5.80752,0,0,0,.61133-.043v1.46289a5.10351,5.10351,0,0,1-1.03223.08594c-1.833,0-2.54785-.68848-2.54785-2.44434V22.91406H80.16262V21.44238H81.479V19.2998Z" style="fill: #fff"/>
+          <path d="M86.065,25.96973c0-2.84863,1.67773-4.63867,4.29395-4.63867,2.625,0,4.29492,1.79,4.29492,4.63867,0,2.85645-1.66113,4.63867-4.29492,4.63867C87.72609,30.6084,86.065,28.82617,86.065,25.96973Zm6.69531,0c0-1.9541-.89551-3.10742-2.40137-3.10742s-2.40039,1.16211-2.40039,3.10742c0,1.96191.89453,3.10645,2.40039,3.10645S92.76027,27.93164,92.76027,25.96973Z" style="fill: #fff"/>
+          <path d="M96.18606,21.44238h1.77246v1.541h.043a2.1594,2.1594,0,0,1,2.17773-1.63574,2.86616,2.86616,0,0,1,.63672.06934v1.73828a2.59794,2.59794,0,0,0-.835-.1123,1.87264,1.87264,0,0,0-1.93652,2.083v5.37012h-1.8584Z" style="fill: #fff"/>
+          <path d="M109.3843,27.83691c-.25,1.64355-1.85059,2.77148-3.89844,2.77148-2.63379,0-4.26855-1.76465-4.26855-4.5957,0-2.83984,1.64355-4.68164,4.19043-4.68164,2.50488,0,4.08008,1.7207,4.08008,4.46582v.63672h-6.39453v.1123a2.358,2.358,0,0,0,2.43555,2.56445,2.04834,2.04834,0,0,0,2.09082-1.27344Zm-6.28223-2.70215h4.52637a2.1773,2.1773,0,0,0-2.2207-2.29785A2.292,2.292,0,0,0,103.10207,25.13477Z" style="fill: #fff"/>
+        </g>
+      </g>
+    </g>
+    <g id="_Group_4" data-name="&lt;Group&gt;">
+      <g>
+        <path d="M37.82619,8.731a2.63964,2.63964,0,0,1,2.80762,2.96484c0,1.90625-1.03027,3.002-2.80762,3.002H35.67092V8.731Zm-1.22852,5.123h1.125a1.87588,1.87588,0,0,0,1.96777-2.146,1.881,1.881,0,0,0-1.96777-2.13379h-1.125Z" style="fill: #fff"/>
+        <path d="M41.68068,12.44434a2.13323,2.13323,0,1,1,4.24707,0,2.13358,2.13358,0,1,1-4.24707,0Zm3.333,0c0-.97607-.43848-1.54687-1.208-1.54687-.77246,0-1.207.5708-1.207,1.54688,0,.98389.43457,1.55029,1.207,1.55029C44.57522,13.99463,45.01369,13.42432,45.01369,12.44434Z" style="fill: #fff"/>
+        <path d="M51.57326,14.69775h-.92187l-.93066-3.31641h-.07031l-.92676,3.31641h-.91309l-1.24121-4.50293h.90137l.80664,3.436h.06641l.92578-3.436h.85254l.92578,3.436h.07031l.80273-3.436h.88867Z" style="fill: #fff"/>
+        <path d="M53.85354,10.19482H54.709v.71533h.06641a1.348,1.348,0,0,1,1.34375-.80225,1.46456,1.46456,0,0,1,1.55859,1.6748v2.915h-.88867V12.00586c0-.72363-.31445-1.0835-.97168-1.0835a1.03294,1.03294,0,0,0-1.0752,1.14111v2.63428h-.88867Z" style="fill: #fff"/>
+        <path d="M59.09377,8.437h.88867v6.26074h-.88867Z" style="fill: #fff"/>
+        <path d="M61.21779,12.44434a2.13346,2.13346,0,1,1,4.24756,0,2.1338,2.1338,0,1,1-4.24756,0Zm3.333,0c0-.97607-.43848-1.54687-1.208-1.54687-.77246,0-1.207.5708-1.207,1.54688,0,.98389.43457,1.55029,1.207,1.55029C64.11232,13.99463,64.5508,13.42432,64.5508,12.44434Z" style="fill: #fff"/>
+        <path d="M66.4009,13.42432c0-.81055.60352-1.27783,1.6748-1.34424l1.21973-.07031v-.38867c0-.47559-.31445-.74414-.92187-.74414-.49609,0-.83984.18213-.93848.50049h-.86035c.09082-.77344.81836-1.26953,1.83984-1.26953,1.12891,0,1.76563.562,1.76563,1.51318v3.07666h-.85547v-.63281h-.07031a1.515,1.515,0,0,1-1.35254.707A1.36026,1.36026,0,0,1,66.4009,13.42432Zm2.89453-.38477v-.37646l-1.09961.07031c-.62012.0415-.90137.25244-.90137.64941,0,.40527.35156.64111.835.64111A1.0615,1.0615,0,0,0,69.29543,13.03955Z" style="fill: #fff"/>
+        <path d="M71.34816,12.44434c0-1.42285.73145-2.32422,1.86914-2.32422a1.484,1.484,0,0,1,1.38086.79h.06641V8.437h.88867v6.26074h-.85156v-.71143h-.07031a1.56284,1.56284,0,0,1-1.41406.78564C72.0718,14.772,71.34816,13.87061,71.34816,12.44434Zm.918,0c0,.95508.4502,1.52979,1.20313,1.52979.749,0,1.21191-.583,1.21191-1.52588,0-.93848-.46777-1.52979-1.21191-1.52979C72.72121,10.91846,72.26613,11.49707,72.26613,12.44434Z" style="fill: #fff"/>
+        <path d="M79.23,12.44434a2.13323,2.13323,0,1,1,4.24707,0,2.13358,2.13358,0,1,1-4.24707,0Zm3.333,0c0-.97607-.43848-1.54687-1.208-1.54687-.77246,0-1.207.5708-1.207,1.54688,0,.98389.43457,1.55029,1.207,1.55029C82.12453,13.99463,82.563,13.42432,82.563,12.44434Z" style="fill: #fff"/>
+        <path d="M84.66945,10.19482h.85547v.71533h.06641a1.348,1.348,0,0,1,1.34375-.80225,1.46456,1.46456,0,0,1,1.55859,1.6748v2.915H87.605V12.00586c0-.72363-.31445-1.0835-.97168-1.0835a1.03294,1.03294,0,0,0-1.0752,1.14111v2.63428h-.88867Z" style="fill: #fff"/>
+        <path d="M93.51516,9.07373v1.1416h.97559v.74854h-.97559V13.2793c0,.47168.19434.67822.63672.67822a2.96657,2.96657,0,0,0,.33887-.02051v.74023a2.9155,2.9155,0,0,1-.4834.04541c-.98828,0-1.38184-.34766-1.38184-1.21582v-2.543h-.71484v-.74854h.71484V9.07373Z" style="fill: #fff"/>
+        <path d="M95.70461,8.437h.88086v2.48145h.07031a1.3856,1.3856,0,0,1,1.373-.80664,1.48339,1.48339,0,0,1,1.55078,1.67871v2.90723H98.69v-2.688c0-.71924-.335-1.0835-.96289-1.0835a1.05194,1.05194,0,0,0-1.13379,1.1416v2.62988h-.88867Z" style="fill: #fff"/>
+        <path d="M104.76125,13.48193a1.828,1.828,0,0,1-1.95117,1.30273A2.04531,2.04531,0,0,1,100.73,12.46045a2.07685,2.07685,0,0,1,2.07617-2.35254c1.25293,0,2.00879.856,2.00879,2.27V12.688h-3.17969v.0498a1.1902,1.1902,0,0,0,1.19922,1.29,1.07934,1.07934,0,0,0,1.07129-.5459Zm-3.126-1.45117h2.27441a1.08647,1.08647,0,0,0-1.1084-1.1665A1.15162,1.15162,0,0,0,101.63527,12.03076Z" style="fill: #fff"/>
+      </g>
+    </g>
+  </g>
+</svg>
+                            </a>
+                        ` : ''}
+                        ${data.liveUrl ? `
+                            <a href="${data.liveUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 text-emerald-400 font-semibold hover:text-emerald-300 transition-colors interactive-element text-lg">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>View Live Demo</span>
+                            </a>
+                        ` : ''}
+                    </div>
+
+                    <div class="aspect-video rounded-2xl overflow-hidden mb-8">
+                        <img src="${data.image}" class="w-full h-full object-cover" alt="${data.title}" onerror="this.onerror=null;this.src='https://placehold.co/1280x720/101010/EAEAEA?text=Project+Image';">
+                    </div>
+                    <div class="prose prose-invert prose-lg max-w-none prose-p:text-secondary prose-ul:text-secondary">
+                        ${data.content}
+                    </div>
+                </div>
+            `;
+            
+            body.style.overflow = 'hidden';
+            caseStudyPage.classList.remove('hidden');
+            caseStudyPage.scrollTop = 0;
+            window.location.hash = projectKey;
+        }
+
+        function showMainPage() {
+            body.style.overflow = '';
+            caseStudyPage.classList.add('hidden');
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+
+        projectCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const project = card.dataset.project;
+                showCaseStudy(project);
+            });
+        });
+
+        backToMainBtn.addEventListener('click', showMainPage);
+
+        // Dynamic Day Greeting & Initial Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const greetingElement = document.getElementById('day-greeting');
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const today = new Date();
+            const dayName = days[today.getDay()];
+            if (greetingElement) {
+                greetingElement.textContent = `How's your ${dayName}? 👋`;
+            }
+
+            // --- Typing Animation ---
+            const h1Element = document.getElementById('typing-heading');
+            if(h1Element) {
+                const textLine1 = "Hey, I'm Gaurav, a";
+                const textLine2 = "Senior Undergraduate";
+                const textLine3 = "at IIT Kanpur.";
+                const typeSpeed = 40; 
+
+                h1Element.innerHTML = '<span id="typing-text"></span><span class="typing-cursor"></span>';
+                const typingTextElement = document.getElementById('typing-text');
+                const cursorElement = h1Element.querySelector('.typing-cursor');
+
+                function typeWriter(text, element, index, callback) {
+                    if (index < text.length) {
+                        element.innerHTML += text.charAt(index);
+                        setTimeout(() => typeWriter(text, element, index + 1, callback), typeSpeed);
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+
+                function startTypingAnimation() {
+                    // Start typing after a short delay to allow the page to settle
+                    setTimeout(() => {
+                        typeWriter(textLine1, typingTextElement, 0, () => {
+                            typingTextElement.appendChild(document.createElement('br'));
+                            
+                            const spanGray = document.createElement('span');
+                            spanGray.className = 'text-gray-400';
+                            typingTextElement.appendChild(spanGray);
+                            
+                            typeWriter(textLine2, spanGray, 0, () => {
+                                spanGray.appendChild(document.createElement('br'));
+                                typeWriter(textLine3, spanGray, 0, () => {
+                                    setTimeout(() => {
+                                        if(cursorElement) cursorElement.classList.add('fade-out');
+                                    }, 1000); 
+                                });
+                            });
+                        });
+                    }, 500); // 500ms delay before animation starts
+                }
+                
+                startTypingAnimation();
+            }
+
+            // Check for hash on load
+            const projectKey = window.location.hash.substring(1);
+            if(projectData[projectKey]) {
+                showCaseStudy(projectKey);
+            }
+
+            updateInteractiveElements();
+        });
+
+        window.addEventListener('popstate', () => {
+            const projectKey = window.location.hash.substring(1);
+            if (projectData[projectKey]) {
+                showCaseStudy(projectKey);
+            } else {
+                showMainPage();
+            }
+        });
+
+    </script>
+</body>
+</html>
+
