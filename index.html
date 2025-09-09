@@ -719,7 +719,8 @@
             // --- Typing Animation ---
             const h1Element = document.getElementById('typing-heading');
             if(h1Element) {
-                const textLine1 = "Hey, I'm Gaurav, a";
+                const textLine1White = "Hey, I'm Gaurav,";
+                const textLine1Gray = " a";
                 const textLine2 = "Senior Undergraduate";
                 const textLine3 = "at IIT Kanpur.";
                 const typeSpeed = 40; 
@@ -738,30 +739,39 @@
                 }
 
                 function startTypingAnimation() {
-                    // Start typing after a short delay to allow the page to settle
                     setTimeout(() => {
-                        typeWriter(textLine1, typingTextElement, 0, () => {
-                            typingTextElement.appendChild(document.createElement('br'));
-                            
+                        // Type the white part of line 1
+                        typeWriter(textLine1White, typingTextElement, 0, () => {
+                            // Create a single gray span for all remaining text
                             const spanGray = document.createElement('span');
                             spanGray.className = 'text-gray-400';
                             typingTextElement.appendChild(spanGray);
-                            
-                            typeWriter(textLine2, spanGray, 0, () => {
+
+                            // Type the gray part of line 1 into the new span
+                            typeWriter(textLine1Gray, spanGray, 0, () => {
+                                // NOW add the line break inside the gray span
                                 spanGray.appendChild(document.createElement('br'));
-                                typeWriter(textLine3, spanGray, 0, () => {
-                                    setTimeout(() => {
-                                        if(cursorElement) cursorElement.classList.add('fade-out');
-                                    }, 1000); 
+                                
+                                // Then, type the second line
+                                typeWriter(textLine2, spanGray, 0, () => {
+                                    // Add the second line break
+                                    spanGray.appendChild(document.createElement('br'));
+                                    
+                                    // Finally, type the third line
+                                    typeWriter(textLine3, spanGray, 0, () => {
+                                        // Fade the cursor out
+                                        setTimeout(() => {
+                                            if(cursorElement) cursorElement.classList.add('fade-out');
+                                        }, 1000); 
+                                    });
                                 });
                             });
                         });
-                    }, 500); // 500ms delay before animation starts
+                    }, 500);
                 }
                 
                 startTypingAnimation();
             }
-
             // Check for hash on load
             const projectKey = window.location.hash.substring(1);
             if(projectData[projectKey]) {
